@@ -67,10 +67,10 @@ C     nthreads_chkpt :: Number of threads to be used; nth_chkpt .eq. nTx*nTy
       integer    nchklev_1
       parameter( nchklev_1      =    20 )
       integer    nchklev_2
-      parameter( nchklev_2      =  120 )
+      parameter( nchklev_2      =  130 )
 c      parameter( nchklev_2      =  150 )
       integer    nchklev_3
-      parameter( nchklev_3      =  120 )
+      parameter( nchklev_3      =  130 )
 c      parameter( nchklev_3      =  150 )
 
 C--   Note always check for the correct sizes of the common blocks!
