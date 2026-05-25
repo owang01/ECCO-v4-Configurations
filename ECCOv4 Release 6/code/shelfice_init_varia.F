@@ -31,6 +31,15 @@ C     i,j,bi,bj - Loop counters
       INTEGER i, j, k, bi, bj
 CEOP
 
+C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
+#ifdef ALLOW_AUTODIFF
+C- Note: Follwing GMREDI_INIT_VARIA, 
+C        to simplify dependency & avoid recomputations, when compiling
+C        pkg/autodiff, we always call SHELFICE_INIT_VARIA to initialise control
+C        variables (as done above) without condition on useSHELFICE.
+C        Therefore, in this case, the "If useSHELFICE" is added back here:
+      IF ( useSHELFICE ) THEN
+#endif
       DO bj = myByLo(myThid), myByHi(myThid)
        DO bi = myBxLo(myThid), myBxHi(myThid)
         DO j = 1-OLy, sNy+OLy
@@ -39,6 +48,9 @@ CEOP
            shelficeForcingS      (i,j,bi,bj) = 0. _d 0
            shelficeHeatFlux      (i,j,bi,bj) = 0. _d 0
            shelficeFreshWaterFlux(i,j,bi,bj) = 0. _d 0
+C Need to initialize SHIICFFreshWaterFlux to fix
+C TAF warning message for top level
+           SHIICFFreshWaterFlux(I,J,bi,bj)   = 0. _d 0
 #ifndef ALLOW_shiTransCoeff_3d
            shiTransCoeffT        (i,j,bi,bj) = 0. _d 0
            shiTransCoeffS        (i,j,bi,bj) = 0. _d 0
@@ -178,6 +190,9 @@ c--
       ENDDO
 #endif /* ALLOW_COST */
 
+#ifdef ALLOW_AUTODIFF
+      ENDIF
+#endif
 #endif /* ALLOW_SHELFICE */
 
       RETURN
